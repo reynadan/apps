@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Mes Applications</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 700px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      padding: 32px 24px;
+    }
+    h1 {
+      text-align: center;
+      color: #2d3a4b;
+      margin-bottom: 32px;
+    }
+    .apps-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .app-card {
+      background: #f9fafb;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+      padding: 20px 28px;
+      min-width: 180px;
+      text-align: center;
+      transition: box-shadow 0.2s;
+    }
+    .app-card:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+    }
+    .app-card a {
+      text-decoration: none;
+      color: #1976d2;
+      font-weight: bold;
+      font-size: 1.1em;
+    }
+    .app-desc {
+      color: #555;
+      font-size: 0.95em;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Bienvenue sur mon Hub d'Applications 🚀</h1>
+    <div class="apps-list">
+      <div class="app-card">
+        <a href="./app1/">App 1</a>
+        <div class="app-desc">Description rapide de l'app 1</div>
+      </div>
+      <div class="app-card">
+        <a href="./app2/">App 2</a>
+        <div class="app-desc">Description rapide de l'app 2</div>
+      </div>
+      <div class="app-card">
+        <a href="./app3/">App 3</a>
+        <div class="app-desc">Description rapide de l'app 3</div>
+      </div>
+      <!-- Ajoute d'autres apps ici -->
+    </div>
+  </div>
+</body>
+</html>
