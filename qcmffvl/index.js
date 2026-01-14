@@ -1,94 +1,15 @@
-// --- Place ici tes questions JSON (20 pour l'exemple, mets-en autant que tu veux) ---
-    const ALL_QUESTIONS = [
-      {
-        "question": "En vol, juste après une configuration extrême et/ou violente, j'essaie de me remobiliser en",
-        "answers": [
-          { "answer": "verbalisant la suite du pilotage à haute voix", "score": 2 },
-          { "answer": "adaptant une respiration en cohérence cardiaque", "score": 3 },
-          { "answer": "lâchant les commandes afin de détendre les bras/épaules", "score": -6 },
-          { "answer": "m'hydratant légèrement", "score": 1 }
-        ]
-      },
-      {
-        "question": "Vous êtes en prise de terrain en S (PTS) ; votre trajectoire s'enfonce sous le plan de descente prévu, vous devez",
-        "answers": [
-          { "answer": "raccourcir vos S", "score": 3 },
-          { "answer": "accélérer pour ne pas perdre de temps", "score": -6 },
-          { "answer": "s'il le faut vous mettre en ligne droite face au terrain", "score": 3 }
-        ]
-      },
-      {
-        "question": "Le variomètre de base",
-        "answers": [
-          { "answer": "utilise ses capacités d'analyse des variations instantanées de pression statique", "score": 6 },
-          { "answer": "extrapole et traduit des variations de pression en « mètre par seconde » (m/s)", "score": 3 },
-          { "answer": "mesure la vitesse ascensionnelle de la masse d'air dans un thermique", "score": -6 },
-          { "answer": "peut mesurer la vitesse du vent s'il est utilisé au sol", "score": -6 }
-        ]
-      },
-      {
-        "question": "Comment peuvent être exprimées les limites des espaces contrôlés ?",
-        "answers": [
-          { "answer": "En niveaux de vol uniquement à cause du trafic IFR", "score": -6 },
-          { "answer": "Selon le cas, en ASFC, AMSL ou FL", "score": 6 },
-          { "answer": "Toujours en altitudes QNH pour prendre en compte les variations de pression", "score": -6 }
-        ]
-      },
-      {
-        "question": "Un vent régulier en force et direction n'a aucune influence",
-        "answers": [
-          { "answer": "sur la vitesse-sol", "score": -6 },
-          { "answer": "sur la vitesse-air", "score": 6 },
-          { "answer": "sur la finesse-sol", "score": -6 }
-        ]
-      },
-      {
-        "question": "La situation météo la plus favorable à la formation d'orages isolés est",
-        "answers": [
-          { "answer": "un marais barométrique", "score": 6 },
-          { "answer": "un anticyclone", "score": -6 },
-          { "answer": "une dépression", "score": 0 }
-        ]
-      },
-      {
-        "question": "Le gonflage face à la voile",
-        "answers": [
-          { "answer": "permet de voir facilement les clefs dans les suspentes", "score": 2 },
-          { "answer": "permet de décoller avec des vents modérés à faibles", "score": 2 },
-          { "answer": "permet de contrôler sa voile facilement pendant qu'elle monte", "score": 2 },
-          { "answer": "permet de décoller avec un vent supérieur à 30 km/h", "score": -6 }
-        ]
-      },
-      {
-        "question": "Le vent météo",
-        "answers": [
-          { "answer": "s'affaiblit lorsque les isobares se resserrent", "score": -6 },
-          { "answer": "se renforce lorsque les isobares se resserrent", "score": 6 },
-          { "answer": "n'a rien à voir avec l'espacement des lignes isobares", "score": -6 }
-        ]
-      },
-      {
-        "question": "La période de reproduction",
-        "answers": [
-          { "answer": "se situe plutôt à la fin de l'été", "score": -6 },
-          { "answer": "se situe plutôt autour du printemps", "score": 2 },
-          { "answer": "dure maximum 3 mois", "score": -6 },
-          { "answer": "varie selon les espèces", "score": 2 },
-          { "answer": "peut durer plus de 6 mois", "score": 2 }
-        ]
-      },
-      {
-        "question": "Sur une aile en vol rectiligne stabilisé, lorsque le pilote provoque une diminution de l'incidence",
-        "answers": [
-          { "answer": "la vitesse sur trajectoire diminue", "score": -6 },
-          { "answer": "la trajectoire s'incurve transitoirement vers le haut", "score": -6 },
-          { "answer": "la vitesse sur trajectoire augmente", "score": 3 },
-          { "answer": "la trajectoire s'incurve transitoirement vers le bas", "score": 3 }
-        ]
-      },
-      // ... Ajoute ici toutes tes questions du JSON ...
-    ];
-
+    let ALL_QUESTIONS = [];
+    
+    fetch('questions.json')
+      .then(response => response.json())
+      .then(data => {
+        ALL_QUESTIONS = data;
+        startGame(); // Lance le jeu une fois les questions chargées
+      })
+      .catch(error => {
+        document.getElementById("game").innerHTML = "<b>Erreur de chargement des questions.</b>";
+        console.error(error);
+      });
     // --- Utilitaires ---
     function shuffle(arr) {
       for (let i = arr.length - 1; i > 0; i--) {
