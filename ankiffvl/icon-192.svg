@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
+  <rect width="192" height="192" rx="40" fill="#1877f2"/>
+  <text x="96" y="72" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="28" font-weight="700">QCM</text>
+  <text x="96" y="108" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="28" font-weight="700">FFVL</text>
+  <circle cx="96" cy="148" r="18" fill="#42b72a"/>
+  <path d="M87 148 L93 154 L106 141" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,2058 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#1877f2">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.svg">
+    <link rel="icon" type="image/svg+xml" href="icon-192.svg">
+    <title>QCM FFVL - Révisions</title>
+    <style>
+        :root {
+            --primary: #1877f2;
+            --primary-hover: #166fe5;
+            --primary-light: #e7f3ff;
+            --primary-bg: #f0f2f5;
+        }
+
+        body.theme-V {
+            --primary: #2e7d32;
+            --primary-hover: #1b5e20;
+            --primary-light: #e8f5e9;
+            --primary-bg: #f1f8f2;
+        }
+
+        body.theme-B {
+            --primary: #1565c0;
+            --primary-hover: #0d47a1;
+            --primary-light: #e3f2fd;
+            --primary-bg: #f0f4f8;
+        }
+
+        body.theme-M {
+            --primary: #6d4c41;
+            --primary-hover: #4e342e;
+            --primary-light: #efebe9;
+            --primary-bg: #f5f2f0;
+        }
+
+        body.theme-T {
+            --primary: #546e7a;
+            --primary-hover: #37474f;
+            --primary-light: #eceff1;
+            --primary-bg: #f2f4f5;
+        }
+
+        body.theme-ALL {
+            --primary: #7b1fa2;
+            --primary-hover: #6a1b9a;
+            --primary-light: #f3e5f5;
+            --primary-bg: #f8f2fa;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: var(--primary-bg);
+            min-height: 100vh;
+            padding: 20px;
+            color: #1c1e21;
+            transition: background-color 0.3s ease;
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #1c1e21;
+            margin-bottom: 16px;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+
+        h2 {
+            color: #1c1e21;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        /* Login */
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 360px;
+            margin: 0 auto;
+        }
+
+        .login-form input {
+            padding: 14px 16px;
+            border: 1px solid #dddfe2;
+            border-radius: 6px;
+            font-size: 16px;
+            font-family: inherit;
+            background: #f5f6f7;
+        }
+
+        .login-form input:focus,
+        .login-form select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #fff;
+        }
+
+        .login-form select {
+            padding: 14px 16px;
+            border: 1px solid #dddfe2;
+            border-radius: 6px;
+            font-size: 16px;
+            font-family: inherit;
+            background: #f5f6f7;
+            cursor: pointer;
+        }
+
+        .level-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.7em;
+            font-weight: 600;
+            margin-left: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .level-badge.V { background: #e7f3e8; color: #1e7e34; }
+        .level-badge.B { background: #e3f2fd; color: #1565c0; }
+        .level-badge.M { background: #efebe9; color: #5d4037; }
+        .level-badge.T { background: #eceff1; color: #546e7a; }
+        .level-badge.ALL { background: #f3e5f5; color: #7b1fa2; }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            touch-action: manipulation;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-success {
+            background: #42b72a;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #fa3e3e;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #e4e6eb;
+            color: #1c1e21;
+        }
+
+        .btn-secondary:hover {
+            background: #d8dadf;
+        }
+
+        /* Dashboard */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            background: #f5f6f7;
+            padding: 16px 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-box .number {
+            font-size: 1.75em;
+            font-weight: 700;
+            color: #1c1e21;
+        }
+
+        .stat-box .label {
+            font-size: 0.75em;
+            color: #65676b;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        .stat-box.due {
+            background: #ffebe9;
+        }
+
+        .stat-box.due .number {
+            color: #d63031;
+        }
+
+        .stat-box.learned {
+            background: #e8f5e9;
+        }
+
+        .stat-box.learned .number {
+            color: #2e7d32;
+        }
+
+        /* Question */
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .question-id {
+            background: var(--primary);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        .question-level {
+            font-size: 0.85em;
+            color: #65676b;
+        }
+
+        .question-text {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #1c1e21;
+            margin-bottom: 20px;
+            padding: 18px;
+            background: #f5f6f7;
+            border-radius: 8px;
+        }
+
+        .answers {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .answer {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 16px;
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border: 2px solid #e4e6eb;
+            border-radius: 8px;
+            touch-action: manipulation;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .answer:hover {
+            border-color: #bcc0c4;
+            background: #f5f6f7;
+        }
+
+        .answer:active {
+            background: #e4e6eb;
+        }
+
+        .answer.selected {
+            background: var(--primary-light);
+            border-color: var(--primary);
+        }
+
+        .answer.correct {
+            background: #e8f5e9;
+            border-color: #4caf50;
+        }
+
+        .answer.incorrect {
+            background: #ffebee;
+            border-color: #f44336;
+        }
+
+        .answer.missed {
+            background: #fff8e1;
+            border-color: #ff9800;
+        }
+
+        .answer input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: var(--primary);
+            border-radius: 4px;
+        }
+
+        .answer-text {
+            flex: 1;
+            line-height: 1.5;
+        }
+
+        .answer-score {
+            font-size: 0.8em;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .answer-score.positive {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .answer-score.negative {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .result-message {
+            padding: 14px 18px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .result-message.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .result-message.error {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        /* Explanation box */
+        .explanation-box {
+            background: var(--primary-light);
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 16px;
+        }
+
+        .explanation-box h4 {
+            color: var(--primary);
+            margin-bottom: 12px;
+            font-size: 0.9em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .explanation-box .correct-answers {
+            margin-bottom: 12px;
+        }
+
+        .explanation-box .correct-answers h5 {
+            color: #2e7d32;
+            margin-bottom: 6px;
+            font-size: 0.9em;
+        }
+
+        .explanation-box .incorrect-answers h5 {
+            color: #c62828;
+            margin-bottom: 6px;
+            font-size: 0.9em;
+        }
+
+        .explanation-box ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .explanation-box li {
+            margin-bottom: 4px;
+            line-height: 1.5;
+        }
+
+        .explanation-box .tip {
+            margin-top: 12px;
+            padding: 12px 14px;
+            background: #fff;
+            border-radius: 6px;
+            font-size: 0.9em;
+            color: #1c1e21;
+            line-height: 1.6;
+        }
+
+        /* Progress bar */
+        .progress-container {
+            margin-bottom: 18px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e4e6eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 4px;
+            transition: width 0.3s ease, background-color 0.3s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 8px;
+            font-size: 0.85em;
+            color: #65676b;
+            font-weight: 500;
+        }
+
+        /* Dashboard Header */
+        .dashboard-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-header h1 {
+            margin-bottom: 0;
+        }
+
+        /* Filter tabs */
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .filter-tab {
+            flex: 1;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 20px;
+            background: #e4e6eb;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-size: 0.9em;
+            font-family: inherit;
+            font-weight: 600;
+            color: #65676b;
+            text-align: center;
+        }
+
+        .filter-tab:hover {
+            background: #d8dadf;
+        }
+
+        .filter-tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Responsive - Tablettes */
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .top-bar {
+                top: 6px;
+                right: 6px;
+                left: 6px;
+                padding: 6px 10px;
+                font-size: 0.85em;
+                justify-content: space-between;
+            }
+
+            .top-bar-user span:first-child {
+                display: none;
+            }
+
+            .top-bar-avatar {
+                width: 28px;
+                height: 28px;
+                font-size: 0.8em;
+            }
+        }
+
+        /* Responsive - Smartphones */
+        @media (max-width: 600px) {
+            body {
+                padding: 0;
+                padding-top: 45px;
+                min-height: 100dvh;
+                background: var(--primary-bg);
+            }
+
+            .card {
+                padding: 16px;
+                border-radius: 0;
+                margin-bottom: 8px;
+            }
+
+            h1 {
+                font-size: 1.3em;
+            }
+
+            .stats-modal {
+                padding: 10px;
+            }
+
+            .stats-content {
+                padding: 18px;
+                max-height: 85vh;
+            }
+
+            .stats-summary {
+                gap: 8px;
+            }
+
+            .stats-item {
+                padding: 12px 6px;
+            }
+
+            .stats-item .value {
+                font-size: 1.4em;
+            }
+
+            .graph-container {
+                height: 150px;
+            }
+
+            .profile-section {
+                padding: 14px;
+            }
+
+            .profile-avatar {
+                width: 48px;
+                height: 48px;
+                font-size: 1.3em;
+            }
+
+            .profile-name {
+                font-size: 1.1em;
+            }
+
+            /* Header mobile */
+            .header {
+                flex-direction: column;
+                gap: 12px;
+                align-items: stretch;
+            }
+
+            .header h1 {
+                text-align: center;
+            }
+
+            .user-info {
+                justify-content: space-between;
+                padding: 10px 14px;
+                background: #f5f6f7;
+                border-radius: 8px;
+            }
+
+            /* Stats mobile */
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .stat-box {
+                padding: 14px 10px;
+            }
+
+            .stat-box .number {
+                font-size: 1.5em;
+            }
+
+            /* Filter tabs mobile */
+            .filter-tabs {
+                gap: 6px;
+            }
+
+            .filter-tab {
+                padding: 10px 12px;
+                font-size: 0.85em;
+                border-radius: 18px;
+            }
+
+            /* Question mobile */
+            .question-header {
+                flex-direction: column;
+                gap: 8px;
+                align-items: flex-start;
+            }
+
+            .question-text {
+                font-size: 1.05em;
+                padding: 14px;
+            }
+
+            /* Réponses mobile */
+            .answers {
+                gap: 8px;
+            }
+
+            .answer {
+                padding: 14px;
+                border-radius: 10px;
+            }
+
+            .answer input[type="checkbox"] {
+                width: 22px;
+                height: 22px;
+                min-width: 22px;
+            }
+
+            /* Boutons mobile */
+            .buttons {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 14px 20px;
+            }
+
+            /* Login */
+            #loginScreen {
+                min-height: 100dvh;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                border-radius: 0;
+            }
+
+            .login-form {
+                max-width: none;
+            }
+
+            /* No questions */
+            .no-questions {
+                padding: 40px 16px;
+            }
+        }
+
+        /* Très petits écrans */
+        @media (max-width: 380px) {
+            .card {
+                padding: 14px;
+            }
+
+            .stat-box .number {
+                font-size: 1.4em;
+            }
+
+            .question-text {
+                font-size: 1em;
+                padding: 12px;
+            }
+
+            .answer {
+                padding: 12px;
+            }
+
+            .filter-tab {
+                padding: 8px 10px;
+                font-size: 0.8em;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #65676b;
+        }
+
+        .no-questions {
+            text-align: center;
+            padding: 50px 20px;
+            color: #65676b;
+        }
+
+        .no-questions h3 {
+            margin-bottom: 10px;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 1.3em;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            position: fixed;
+            top: 12px;
+            right: 12px;
+            background: white;
+            padding: 6px 8px 6px 14px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            cursor: pointer;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+            z-index: 100;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .top-bar:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+
+        .top-bar-score {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .top-bar-score .streak {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.85em;
+        }
+
+        .top-bar-user {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-left: 12px;
+            border-left: 1px solid #e4e6eb;
+            color: #65676b;
+            font-weight: 500;
+        }
+
+        .top-bar-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+
+        .score-popup .top-bar-score {
+            animation: scorePopup 0.3s ease;
+        }
+
+        @keyframes scorePopup {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        /* Stats Modal */
+        .stats-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+            opacity: 0;
+            animation: fadeIn 0.2s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .stats-content {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .stats-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .stats-header h2 {
+            margin: 0;
+            font-size: 1.3em;
+        }
+
+        .stats-close {
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #666;
+            padding: 4px 8px;
+            line-height: 1;
+        }
+
+        .stats-close:hover {
+            color: #333;
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--primary-light);
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .profile-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.5em;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #1c1e21;
+            margin-bottom: 4px;
+        }
+
+        .profile-level .level-badge {
+            margin-left: 0;
+        }
+
+        .profile-actions {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .stats-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stats-item {
+            text-align: center;
+            padding: 16px 8px;
+            background: var(--primary-light);
+            border-radius: 8px;
+        }
+
+        .stats-item .value {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stats-item .label {
+            font-size: 0.75em;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .stats-graph {
+            margin-bottom: 20px;
+        }
+
+        .stats-graph h3 {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .graph-container {
+            background: #f5f6f7;
+            border-radius: 8px;
+            padding: 16px;
+            height: 180px;
+            position: relative;
+        }
+
+        .graph-canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .graph-empty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .stats-history {
+            border-top: 1px solid #eee;
+            padding-top: 16px;
+        }
+
+        .stats-history h3 {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .history-list {
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.85em;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-date {
+            color: #666;
+        }
+
+        .history-score {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        /* Success Animation */
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .success-checkmark {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .success-checkmark svg {
+            width: 50px;
+            height: 50px;
+            stroke: white;
+            stroke-width: 3;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .success-checkmark svg path {
+            stroke-dasharray: 60;
+            stroke-dashoffset: 60;
+            animation: drawCheck 0.4s ease forwards 0.2s;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes drawCheck {
+            to { stroke-dashoffset: 0; }
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; transform: scale(0.8); }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            top: 50%;
+            left: 50%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        @keyframes confettiExplode {
+            0% {
+                transform: translate(0, 0) rotate(0deg) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) rotate(720deg) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Card shake for wrong answer */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+
+        .shake {
+            animation: shake 0.4s ease;
+        }
+    </style>
+    <script src="questions.js"></script>
+</head>
+<body>
+    <!-- Top Bar (Score + Profile) -->
+    <div id="topBar" class="top-bar hidden" onclick="showProfile()">
+        <div class="top-bar-score">
+            <span id="totalScore">0</span> pts
+            <span class="streak" id="streakDisplay" title="Série en cours">0</span>
+        </div>
+        <div class="top-bar-user">
+            <span id="topBarUserName"></span>
+            <span class="top-bar-avatar" id="topBarAvatar"></span>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Login Screen -->
+        <div id="loginScreen" class="card">
+            <h1>QCM FFVL</h1>
+            <p style="text-align: center; color: #666; margin-bottom: 25px;">
+                Révisez les questions du brevet de pilote avec la méthode de répétition espacée
+            </p>
+            <div class="login-form">
+                <input type="text" id="username" placeholder="Votre nom ou pseudo" autocomplete="username">
+                <select id="levelSelect">
+                    <option value="V">Brevet Initial (Vert)</option>
+                    <option value="B">Brevet de Pilote (Bleu)</option>
+                    <option value="M">Brevet de Pilote Confirmé (Marron)</option>
+                    <option value="T">Qualification Treuil</option>
+                    <option value="ALL">Toutes les questions</option>
+                </select>
+                <button class="btn btn-primary" onclick="login()">Commencer</button>
+            </div>
+            <p style="text-align: center; color: #999; margin-top: 20px; font-size: 0.85em;">
+                Vos progrès seront sauvegardés localement
+            </p>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="dashboard" class="card hidden">
+            <div class="dashboard-header">
+                <h1>QCM FFVL</h1>
+                <span id="levelBadge" class="level-badge"></span>
+            </div>
+
+            <div class="stats">
+                <div class="stat-box due">
+                    <div class="number" id="dueCount">0</div>
+                    <div class="label">À réviser</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number" id="newCount">0</div>
+                    <div class="label">Nouvelles</div>
+                </div>
+                <div class="stat-box learned">
+                    <div class="number" id="learnedCount">0</div>
+                    <div class="label">Apprises</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number" id="totalCount">0</div>
+                    <div class="label">Total</div>
+                </div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+                <div class="progress-text" id="progressText">0% complété</div>
+            </div>
+
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="due" onclick="setFilter('due')">À réviser</button>
+                <button class="filter-tab" data-filter="new" onclick="setFilter('new')">Nouvelles</button>
+                <button class="filter-tab" data-filter="all" onclick="setFilter('all')">Toutes</button>
+            </div>
+
+            <div class="buttons">
+                <button class="btn btn-primary" onclick="startSession()">Commencer la session</button>
+                <button class="btn btn-secondary" onclick="resetProgress()">Réinitialiser</button>
+            </div>
+        </div>
+
+        <!-- Question Screen -->
+        <div id="questionScreen" class="card hidden">
+            <div class="question-header">
+                <span class="question-id" id="questionId"></span>
+                <span class="question-level" id="questionLevel"></span>
+            </div>
+
+            <div class="question-text" id="questionText"></div>
+
+            <div class="answers" id="answersContainer"></div>
+
+            <div id="resultMessage" class="result-message hidden"></div>
+
+            <div id="explanationBox" class="explanation-box hidden"></div>
+
+            <div class="buttons" id="questionButtons">
+                <button class="btn btn-primary" id="validateBtn" onclick="validateAnswer()">Valider</button>
+                <button class="btn btn-secondary" onclick="backToDashboard()">Retour</button>
+            </div>
+
+            <div class="buttons hidden" id="nextButtons">
+                <button class="btn btn-primary" onclick="nextQuestion()">Question suivante</button>
+                <button class="btn btn-secondary" onclick="backToDashboard()">Retour au tableau de bord</button>
+            </div>
+        </div>
+
+        <!-- No Questions Screen -->
+        <div id="noQuestionsScreen" class="card hidden">
+            <div class="no-questions">
+                <h3>Bravo !</h3>
+                <p>Aucune question à réviser pour le moment.</p>
+                <p style="margin-top: 10px; font-size: 0.9em; color: #888;">
+                    Revenez plus tard ou ajoutez de nouvelles questions.
+                </p>
+                <button class="btn btn-primary" style="margin-top: 20px;" onclick="backToDashboard()">Retour</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration de la répétition espacée (en millisecondes)
+        const INTERVALS = [
+            0,              // Niveau 0: nouveau
+            60000,          // Niveau 1: 1 minute
+            600000,         // Niveau 2: 10 minutes
+            3600000,        // Niveau 3: 1 heure
+            86400000,       // Niveau 4: 1 jour
+            259200000,      // Niveau 5: 3 jours
+            604800000,      // Niveau 6: 7 jours
+            1209600000,     // Niveau 7: 14 jours
+            2592000000      // Niveau 8: 30 jours (considéré comme appris)
+        ];
+
+        const LEVEL_NAMES = [
+            'Nouveau',
+            'À revoir (1 min)',
+            'À revoir (10 min)',
+            'À revoir (1 h)',
+            'À revoir (1 jour)',
+            'À revoir (3 jours)',
+            'À revoir (7 jours)',
+            'À revoir (14 jours)',
+            'Appris'
+        ];
+
+        let questions = [];
+        let currentUser = null;
+        let currentLevel = 'V';
+        let userProgress = {};
+        let currentFilter = 'due';
+        let currentQuestionIndex = -1;
+        let filteredQuestions = [];
+        let answered = false;
+
+        // Système de score
+        let userStats = {
+            totalScore: 0,
+            currentStreak: 0,
+            bestStreak: 0,
+            totalCorrect: 0,
+            totalAnswered: 0,
+            history: [] // [{date, score, correct, total}]
+        };
+
+        const BREVET_NAMES = {
+            'V': 'Brevet Initial',
+            'B': 'Brevet de Pilote',
+            'M': 'Brevet Confirmé',
+            'T': 'Qualification Treuil',
+            'ALL': 'Toutes'
+        };
+
+        // URL du Manuel du Vol Libre FFVL (PDF)
+        const MANUAL_URL = 'Manuel-FFVL.pdf';
+        const MANUAL_ONLINE_URL = 'http://manuelaraimbault.com/wp-content/uploads/2019/04/Manuel-FFVL.pdf';
+
+        // Charger les questions depuis le fichier JS et filtrer par niveau
+        function loadQuestions() {
+            if (currentLevel === 'ALL') {
+                questions = QUESTIONS_DATA;
+            } else {
+                questions = QUESTIONS_DATA.filter(q => q.id.endsWith(currentLevel));
+            }
+            console.log(`${questions.length} questions chargées (niveau ${currentLevel})`);
+        }
+
+        // Appliquer le thème selon le niveau
+        function applyTheme(level) {
+            document.body.className = '';
+            document.body.classList.add('theme-' + level);
+        }
+
+        // Login
+        function login() {
+            const username = document.getElementById('username').value.trim();
+            if (!username) {
+                alert('Veuillez entrer votre nom');
+                return;
+            }
+
+            const level = document.getElementById('levelSelect').value;
+            currentUser = username;
+            currentLevel = level;
+            localStorage.setItem('ankiffvl_user', username);
+            localStorage.setItem('ankiffvl_level', level);
+            applyTheme(level);
+            loadQuestions();
+            loadUserProgress();
+            loadUserStats();
+            showDashboard();
+        }
+
+        function logout() {
+            currentUser = null;
+            currentLevel = 'V';
+            localStorage.removeItem('ankiffvl_user');
+            localStorage.removeItem('ankiffvl_level');
+            document.body.className = '';
+            document.getElementById('topBar').classList.add('hidden');
+            // Fermer le modal profil si ouvert
+            const modal = document.querySelector('.stats-modal');
+            if (modal) modal.remove();
+            showLogin();
+        }
+
+        function loadUserProgress() {
+            const saved = localStorage.getItem(`ankiffvl_progress_${currentUser}`);
+            if (saved) {
+                userProgress = JSON.parse(saved);
+            } else {
+                userProgress = {};
+            }
+        }
+
+        function saveUserProgress() {
+            localStorage.setItem(`ankiffvl_progress_${currentUser}`, JSON.stringify(userProgress));
+        }
+
+        function loadUserStats() {
+            const saved = localStorage.getItem(`ankiffvl_stats_${currentUser}`);
+            if (saved) {
+                userStats = JSON.parse(saved);
+            } else {
+                userStats = {
+                    totalScore: 0,
+                    currentStreak: 0,
+                    bestStreak: 0,
+                    totalCorrect: 0,
+                    totalAnswered: 0,
+                    history: []
+                };
+            }
+            updateScoreDisplay();
+        }
+
+        function saveUserStats() {
+            localStorage.setItem(`ankiffvl_stats_${currentUser}`, JSON.stringify(userStats));
+        }
+
+        function updateScoreDisplay() {
+            document.getElementById('totalScore').textContent = userStats.totalScore;
+            document.getElementById('streakDisplay').textContent = userStats.currentStreak;
+            document.getElementById('topBarUserName').textContent = currentUser;
+            document.getElementById('topBarAvatar').textContent = currentUser.charAt(0).toUpperCase();
+            document.getElementById('topBar').classList.remove('hidden');
+        }
+
+        function addScore(correct) {
+            userStats.totalAnswered++;
+
+            if (correct) {
+                userStats.totalCorrect++;
+                userStats.currentStreak++;
+
+                // Points de base + bonus de série
+                const basePoints = 10;
+                const streakBonus = Math.min(userStats.currentStreak - 1, 10) * 2;
+                const points = basePoints + streakBonus;
+
+                userStats.totalScore += points;
+
+                if (userStats.currentStreak > userStats.bestStreak) {
+                    userStats.bestStreak = userStats.currentStreak;
+                }
+
+                // Animation du score
+                const topBar = document.getElementById('topBar');
+                topBar.classList.remove('score-popup');
+                void topBar.offsetWidth; // Force reflow
+                topBar.classList.add('score-popup');
+            } else {
+                userStats.currentStreak = 0;
+            }
+
+            // Enregistrer dans l'historique (une entrée par jour)
+            const today = new Date().toISOString().split('T')[0];
+            const todayEntry = userStats.history.find(h => h.date === today);
+
+            if (todayEntry) {
+                todayEntry.score = userStats.totalScore;
+                todayEntry.correct += correct ? 1 : 0;
+                todayEntry.total++;
+            } else {
+                userStats.history.push({
+                    date: today,
+                    score: userStats.totalScore,
+                    correct: correct ? 1 : 0,
+                    total: 1
+                });
+            }
+
+            // Garder seulement les 30 derniers jours
+            if (userStats.history.length > 30) {
+                userStats.history = userStats.history.slice(-30);
+            }
+
+            saveUserStats();
+            updateScoreDisplay();
+        }
+
+        // Obtenir le progrès d'une question
+        function getQuestionProgress(questionId) {
+            if (!userProgress[questionId]) {
+                userProgress[questionId] = {
+                    level: 0,
+                    nextReview: 0,
+                    lastReview: 0
+                };
+            }
+            return userProgress[questionId];
+        }
+
+        // Mettre à jour le progrès après une réponse
+        function updateProgress(questionId, correct) {
+            const progress = getQuestionProgress(questionId);
+            const now = Date.now();
+
+            if (correct) {
+                // Monter d'un niveau
+                progress.level = Math.min(progress.level + 1, INTERVALS.length - 1);
+            } else {
+                // Redescendre au niveau 1
+                progress.level = 1;
+            }
+
+            progress.lastReview = now;
+            progress.nextReview = now + INTERVALS[progress.level];
+            saveUserProgress();
+        }
+
+        // Calculer les statistiques
+        function calculateStats() {
+            const now = Date.now();
+            let due = 0;
+            let newCount = 0;
+            let learned = 0;
+
+            for (const q of questions) {
+                const progress = getQuestionProgress(q.id);
+
+                if (progress.level === 0) {
+                    newCount++;
+                } else if (progress.level >= INTERVALS.length - 1) {
+                    learned++;
+                } else if (progress.nextReview <= now) {
+                    due++;
+                }
+            }
+
+            return { due, new: newCount, learned, total: questions.length };
+        }
+
+        // Mélanger un tableau (Fisher-Yates)
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // Filtrer les questions
+        function getFilteredQuestions(filter) {
+            const now = Date.now();
+
+            const filtered = questions.filter(q => {
+                const progress = getQuestionProgress(q.id);
+
+                switch (filter) {
+                    case 'due':
+                        return (progress.level > 0 && progress.level < INTERVALS.length - 1 && progress.nextReview <= now) ||
+                               progress.level === 0;
+                    case 'new':
+                        return progress.level === 0;
+                    case 'all':
+                        return true;
+                    default:
+                        return true;
+                }
+            });
+
+            // Séparer les questions à réviser (urgentes) des nouvelles
+            const dueQuestions = filtered.filter(q => {
+                const p = getQuestionProgress(q.id);
+                return p.level > 0 && p.nextReview <= now;
+            }).sort((a, b) => getQuestionProgress(a.id).nextReview - getQuestionProgress(b.id).nextReview);
+
+            const newQuestions = shuffleArray(filtered.filter(q => getQuestionProgress(q.id).level === 0));
+
+            // Questions à réviser en premier, puis nouvelles mélangées
+            return [...dueQuestions, ...newQuestions];
+        }
+
+        // Interface
+        function showLogin() {
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('questionScreen').classList.add('hidden');
+            document.getElementById('noQuestionsScreen').classList.add('hidden');
+        }
+
+        function showDashboard() {
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            document.getElementById('questionScreen').classList.add('hidden');
+            document.getElementById('noQuestionsScreen').classList.add('hidden');
+
+            // Afficher le badge du niveau
+            const badge = document.getElementById('levelBadge');
+            badge.textContent = BREVET_NAMES[currentLevel];
+            badge.className = 'level-badge ' + currentLevel;
+
+            updateStats();
+        }
+
+        function updateStats() {
+            const stats = calculateStats();
+            document.getElementById('dueCount').textContent = stats.due + stats.new;
+            document.getElementById('newCount').textContent = stats.new;
+            document.getElementById('learnedCount').textContent = stats.learned;
+            document.getElementById('totalCount').textContent = stats.total;
+
+            const percentage = stats.total > 0 ? Math.round((stats.learned / stats.total) * 100) : 0;
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = percentage + '% complété';
+        }
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.filter === filter);
+            });
+        }
+
+        function startSession() {
+            filteredQuestions = getFilteredQuestions(currentFilter);
+
+            if (filteredQuestions.length === 0) {
+                document.getElementById('dashboard').classList.add('hidden');
+                document.getElementById('noQuestionsScreen').classList.remove('hidden');
+                return;
+            }
+
+            currentQuestionIndex = 0;
+            showQuestion();
+        }
+
+        function showQuestion() {
+            if (currentQuestionIndex >= filteredQuestions.length) {
+                backToDashboard();
+                return;
+            }
+
+            const question = filteredQuestions[currentQuestionIndex];
+            const progress = getQuestionProgress(question.id);
+
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('questionScreen').classList.remove('hidden');
+            document.getElementById('noQuestionsScreen').classList.add('hidden');
+
+            document.getElementById('questionId').textContent = question.id;
+            document.getElementById('questionLevel').textContent = LEVEL_NAMES[progress.level];
+            document.getElementById('questionText').textContent = question.text;
+
+            // Mélanger les réponses
+            const shuffledAnswers = [...question.answers].sort(() => Math.random() - 0.5);
+
+            const container = document.getElementById('answersContainer');
+            container.innerHTML = '';
+
+            shuffledAnswers.forEach((answer, index) => {
+                const div = document.createElement('div');
+                div.className = 'answer';
+                div.innerHTML = `
+                    <input type="checkbox" id="answer${index}" data-score="${answer.score}">
+                    <span class="answer-text">${answer.text}</span>
+                `;
+                const checkbox = div.querySelector('input');
+
+                // Clic sur la div entière (sauf checkbox) toggle la sélection
+                div.addEventListener('click', (e) => {
+                    if (e.target.tagName !== 'INPUT' && !answered) {
+                        checkbox.checked = !checkbox.checked;
+                        div.classList.toggle('selected', checkbox.checked);
+                    }
+                });
+
+                // Sync le style quand on clique directement sur la checkbox
+                checkbox.addEventListener('change', () => {
+                    if (!answered) {
+                        div.classList.toggle('selected', checkbox.checked);
+                    }
+                });
+
+                container.appendChild(div);
+            });
+
+            // Reset l'état
+            answered = false;
+            document.getElementById('resultMessage').classList.add('hidden');
+            document.getElementById('explanationBox').classList.add('hidden');
+            document.getElementById('questionButtons').classList.remove('hidden');
+            document.getElementById('nextButtons').classList.add('hidden');
+            document.getElementById('validateBtn').disabled = false;
+        }
+
+        function validateAnswer() {
+            if (answered) return;
+            answered = true;
+
+            const question = filteredQuestions[currentQuestionIndex];
+            const answers = document.querySelectorAll('#answersContainer .answer');
+            let totalScore = 0;
+            let maxPossibleScore = 0;
+            let hasErrors = false;
+
+            answers.forEach(answerDiv => {
+                const checkbox = answerDiv.querySelector('input');
+                const score = parseInt(checkbox.dataset.score);
+                const isCorrect = score > 0;
+                const isSelected = checkbox.checked;
+
+                if (isCorrect) {
+                    maxPossibleScore += score;
+                }
+
+                if (isSelected && isCorrect) {
+                    answerDiv.classList.add('correct');
+                    totalScore += score;
+                } else if (isSelected && !isCorrect) {
+                    answerDiv.classList.add('incorrect');
+                    hasErrors = true;
+                } else if (!isSelected && isCorrect) {
+                    answerDiv.classList.add('missed');
+                    hasErrors = true;
+                }
+
+                // Afficher le score
+                const scoreSpan = document.createElement('span');
+                scoreSpan.className = 'answer-score ' + (score > 0 ? 'positive' : 'negative');
+                scoreSpan.textContent = (score > 0 ? '+' : '') + score;
+                answerDiv.appendChild(scoreSpan);
+            });
+
+            // Déterminer si la réponse est correcte
+            const isCorrect = !hasErrors && totalScore === maxPossibleScore;
+
+            // Afficher le résultat
+            const resultDiv = document.getElementById('resultMessage');
+            resultDiv.classList.remove('hidden', 'success', 'error');
+
+            if (isCorrect) {
+                resultDiv.classList.add('success');
+                resultDiv.textContent = 'Correct ! La question sera revue plus tard.';
+                showSuccessAnimation();
+            } else {
+                resultDiv.classList.add('error');
+                resultDiv.textContent = 'Incorrect. Cette question sera reproposée bientôt.';
+                // Shake animation
+                document.getElementById('questionScreen').classList.add('shake');
+                setTimeout(() => {
+                    document.getElementById('questionScreen').classList.remove('shake');
+                }, 400);
+            }
+
+            // Mettre à jour le progrès et le score
+            updateProgress(question.id, isCorrect);
+            addScore(isCorrect);
+
+            // Générer l'explication
+            showExplanation(question, isCorrect);
+
+            // Changer les boutons
+            document.getElementById('questionButtons').classList.add('hidden');
+            document.getElementById('nextButtons').classList.remove('hidden');
+        }
+
+        // Animation de succès
+        function showSuccessAnimation() {
+            // Créer l'overlay avec le checkmark
+            const overlay = document.createElement('div');
+            overlay.className = 'success-overlay';
+            overlay.innerHTML = `
+                <div class="success-checkmark">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M5 13l4 4L19 7"/>
+                    </svg>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+
+            // Créer les confettis
+            createConfetti();
+
+            // Supprimer après l'animation
+            setTimeout(() => {
+                overlay.style.animation = 'fadeOut 0.3s ease forwards';
+                setTimeout(() => overlay.remove(), 300);
+            }, 800);
+        }
+
+        function createConfetti() {
+            const colors = ['#ff6b6b', '#feca57', '#48dbfb', '#ff9ff3', '#54a0ff', '#5f27cd', '#00d2d3', '#1dd1a1'];
+            const confettiCount = 50;
+
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = '50%';
+                confetti.style.top = '50%';
+
+                // Position et mouvement aléatoires
+                const angle = (Math.random() * 360) * (Math.PI / 180);
+                const velocity = 150 + Math.random() * 200;
+                const tx = Math.cos(angle) * velocity;
+                const ty = Math.sin(angle) * velocity - 100;
+
+                confetti.style.setProperty('--tx', tx + 'px');
+                confetti.style.setProperty('--ty', ty + 'px');
+                confetti.style.width = (5 + Math.random() * 8) + 'px';
+                confetti.style.height = (5 + Math.random() * 8) + 'px';
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+
+                confetti.style.animation = `confettiExplode 0.8s ease-out forwards`;
+                confetti.style.animationDelay = (Math.random() * 0.1) + 's';
+
+                document.body.appendChild(confetti);
+
+                setTimeout(() => confetti.remove(), 1000);
+            }
+        }
+
+        function showExplanation(question, wasCorrect) {
+            const explanationBox = document.getElementById('explanationBox');
+
+            let html = '<h4>Explication</h4>';
+
+            // Explication principale
+            if (question.explanation) {
+                html += '<div class="tip" style="background: #fff; border-left: 4px solid var(--primary);">';
+                html += question.explanation;
+                html += '</div>';
+            }
+
+            // Référence au Manuel du Vol Libre
+            if (question.manualPage) {
+                html += '<div class="tip" style="margin-top: 10px; background: #fff3cd; border-left: 4px solid #ffc107;">';
+                html += '<strong>📖 Pour approfondir :</strong> ';
+                html += '<a href="' + MANUAL_URL + '#page=' + question.manualPage + '" target="_blank" style="color: #856404;">';
+                html += 'Manuel du Vol Libre, page ' + question.manualPage;
+                html += '</a>';
+                html += '</div>';
+            }
+
+            // Conseil si erreur
+            if (!wasCorrect) {
+                html += '<div class="tip" style="margin-top: 10px;">';
+                html += 'Cette question vous sera reproposée prochainement.';
+                html += '</div>';
+            }
+
+            explanationBox.innerHTML = html;
+            explanationBox.classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < filteredQuestions.length) {
+                showQuestion();
+            } else {
+                backToDashboard();
+            }
+        }
+
+        function backToDashboard() {
+            showDashboard();
+        }
+
+        function resetProgress() {
+            if (confirm('Êtes-vous sûr de vouloir réinitialiser votre progression ?')) {
+                userProgress = {};
+                saveUserProgress();
+                updateStats();
+            }
+        }
+
+        // Afficher le profil et les statistiques
+        function showProfile() {
+            const accuracy = userStats.totalAnswered > 0
+                ? Math.round((userStats.totalCorrect / userStats.totalAnswered) * 100)
+                : 0;
+
+            const modal = document.createElement('div');
+            modal.className = 'stats-modal';
+            modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+
+            modal.innerHTML = `
+                <div class="stats-content">
+                    <div class="stats-header">
+                        <h2>Profil</h2>
+                        <button class="stats-close" onclick="this.closest('.stats-modal').remove()">&times;</button>
+                    </div>
+
+                    <div class="profile-section">
+                        <div class="profile-avatar">${currentUser.charAt(0).toUpperCase()}</div>
+                        <div class="profile-info">
+                            <div class="profile-name">${currentUser}</div>
+                            <div class="profile-level">
+                                <span class="level-badge ${currentLevel}">${BREVET_NAMES[currentLevel]}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stats-summary">
+                        <div class="stats-item">
+                            <div class="value">${userStats.totalScore}</div>
+                            <div class="label">Score total</div>
+                        </div>
+                        <div class="stats-item">
+                            <div class="value">${userStats.bestStreak}</div>
+                            <div class="label">Meilleure série</div>
+                        </div>
+                        <div class="stats-item">
+                            <div class="value">${accuracy}%</div>
+                            <div class="label">Précision</div>
+                        </div>
+                    </div>
+
+                    <div class="stats-graph">
+                        <h3>Évolution du score</h3>
+                        <div class="graph-container">
+                            ${userStats.history.length > 1
+                                ? '<canvas id="statsCanvas" class="graph-canvas"></canvas>'
+                                : `<div class="graph-empty">
+                                    <div style="text-align: center;">
+                                        <div style="font-size: 2em; margin-bottom: 8px;">📊</div>
+                                        <div style="margin-bottom: 8px;">Pas encore assez de données</div>
+                                        <div style="font-size: 0.85em; color: #888;">
+                                            ${userStats.history.length === 0
+                                                ? 'Répondez à des questions pour commencer à suivre votre progression'
+                                                : 'Revenez demain pour voir votre évolution !<br><small style="color:#aaa">Le graphique apparaît après 2 jours d\'activité</small>'
+                                            }
+                                        </div>
+                                    </div>
+                                </div>`
+                            }
+                        </div>
+                    </div>
+
+                    <div class="stats-history">
+                        <h3>Historique récent</h3>
+                        <div class="history-list">
+                            ${userStats.history.length > 0
+                                ? userStats.history.slice().reverse().slice(0, 7).map(h => `
+                                    <div class="history-item">
+                                        <span class="history-date">${formatDate(h.date)}</span>
+                                        <span>${h.correct}/${h.total} réponses</span>
+                                        <span class="history-score">${h.score} pts</span>
+                                    </div>
+                                `).join('')
+                                : `<div style="color: #888; text-align: center; padding: 20px;">
+                                    <div style="margin-bottom: 6px;">Aucune activité enregistrée</div>
+                                    <div style="font-size: 0.85em; color: #aaa;">Commencez une session pour voir votre historique</div>
+                                </div>`
+                            }
+                        </div>
+                    </div>
+
+                    <div class="profile-actions">
+                        <button class="btn btn-secondary" onclick="logout()" style="width: 100%;">
+                            Déconnexion
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+
+            // Dessiner le graphique si on a des données
+            if (userStats.history.length > 1) {
+                setTimeout(() => drawStatsGraph(), 50);
+            }
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            const options = { day: 'numeric', month: 'short' };
+            return date.toLocaleDateString('fr-FR', options);
+        }
+
+        function drawStatsGraph() {
+            const canvas = document.getElementById('statsCanvas');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            const rect = canvas.parentElement.getBoundingClientRect();
+
+            // Set canvas size
+            canvas.width = rect.width - 32;
+            canvas.height = rect.height - 32;
+
+            const data = userStats.history.slice(-14); // 14 derniers jours max
+            if (data.length < 2) return;
+
+            const padding = { top: 20, right: 20, bottom: 30, left: 50 };
+            const width = canvas.width - padding.left - padding.right;
+            const height = canvas.height - padding.top - padding.bottom;
+
+            const scores = data.map(d => d.score);
+            const minScore = Math.min(...scores);
+            const maxScore = Math.max(...scores);
+            const scoreRange = maxScore - minScore || 1;
+
+            // Dessiner les axes
+            ctx.strokeStyle = '#ddd';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(padding.left, padding.top);
+            ctx.lineTo(padding.left, canvas.height - padding.bottom);
+            ctx.lineTo(canvas.width - padding.right, canvas.height - padding.bottom);
+            ctx.stroke();
+
+            // Dessiner les lignes de grille horizontales
+            ctx.strokeStyle = '#f0f0f0';
+            ctx.setLineDash([5, 5]);
+            for (let i = 0; i <= 4; i++) {
+                const y = padding.top + (height * i / 4);
+                ctx.beginPath();
+                ctx.moveTo(padding.left, y);
+                ctx.lineTo(canvas.width - padding.right, y);
+                ctx.stroke();
+            }
+            ctx.setLineDash([]);
+
+            // Calculer les points
+            const points = data.map((d, i) => ({
+                x: padding.left + (width * i / (data.length - 1)),
+                y: padding.top + height - ((d.score - minScore) / scoreRange * height)
+            }));
+
+            // Dessiner l'aire sous la courbe
+            const primaryColor = getComputedStyle(document.body).getPropertyValue('--primary').trim() || '#1877f2';
+            ctx.fillStyle = primaryColor + '20';
+            ctx.beginPath();
+            ctx.moveTo(points[0].x, canvas.height - padding.bottom);
+            points.forEach(p => ctx.lineTo(p.x, p.y));
+            ctx.lineTo(points[points.length - 1].x, canvas.height - padding.bottom);
+            ctx.closePath();
+            ctx.fill();
+
+            // Dessiner la ligne
+            ctx.strokeStyle = primaryColor;
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.beginPath();
+            points.forEach((p, i) => {
+                if (i === 0) ctx.moveTo(p.x, p.y);
+                else ctx.lineTo(p.x, p.y);
+            });
+            ctx.stroke();
+
+            // Dessiner les points
+            ctx.fillStyle = primaryColor;
+            points.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            // Labels Y (scores)
+            ctx.fillStyle = '#666';
+            ctx.font = '11px -apple-system, sans-serif';
+            ctx.textAlign = 'right';
+            ctx.fillText(maxScore, padding.left - 8, padding.top + 4);
+            ctx.fillText(minScore, padding.left - 8, canvas.height - padding.bottom);
+
+            // Labels X (dates)
+            ctx.textAlign = 'center';
+            const labelIndices = [0, Math.floor(data.length / 2), data.length - 1];
+            labelIndices.forEach(i => {
+                if (data[i]) {
+                    ctx.fillText(formatDate(data[i].date), points[i].x, canvas.height - 8);
+                }
+            });
+        }
+
+        // Initialisation
+        function init() {
+            const savedUser = localStorage.getItem('ankiffvl_user');
+            const savedLevel = localStorage.getItem('ankiffvl_level');
+
+            if (savedUser && savedLevel) {
+                currentUser = savedUser;
+                currentLevel = savedLevel;
+                applyTheme(savedLevel);
+                loadQuestions();
+                loadUserProgress();
+                loadUserStats();
+                showDashboard();
+            } else {
+                loadQuestions(); // Charge avec le niveau par défaut pour affichage
+                showLogin();
+            }
+
+            // Pré-sélectionner le niveau sauvegardé dans le formulaire
+            if (savedLevel) {
+                document.getElementById('levelSelect').value = savedLevel;
+            }
+
+            // Permettre la connexion avec Entrée
+            document.getElementById('username').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    login();
+                }
+            });
+        }
+
+        init();
+    </script>
+</body>
+</html>
