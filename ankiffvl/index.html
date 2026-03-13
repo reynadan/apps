@@ -1115,7 +1115,7 @@
     <!-- Top Bar (Score + Profile) -->
     <div id="topBar" class="top-bar hidden" onclick="showProfile()">
         <div class="top-bar-score">
-            <span id="totalScore">0</span> pts
+            <span id="totalScore">0</span>%
             <span class="streak" id="streakDisplay" title="Série en cours">0</span>
         </div>
         <div class="top-bar-user">
@@ -1371,8 +1371,17 @@
             localStorage.setItem(`ankiffvl_stats_${currentUser}`, JSON.stringify(userStats));
         }
 
+        function getTodayPercentage() {
+            const today = new Date().toISOString().split('T')[0];
+            const todayEntry = userStats.history.find(h => h.date === today);
+            if (todayEntry && todayEntry.total > 0) {
+                return Math.round((todayEntry.correct / todayEntry.total) * 100);
+            }
+            return 0;
+        }
+
         function updateScoreDisplay() {
-            document.getElementById('totalScore').textContent = userStats.totalScore;
+            document.getElementById('totalScore').textContent = getTodayPercentage();
             document.getElementById('streakDisplay').textContent = userStats.currentStreak;
             document.getElementById('topBarUserName').textContent = currentUser;
             document.getElementById('topBarAvatar').textContent = currentUser.charAt(0).toUpperCase();
@@ -1385,13 +1394,6 @@
             if (correct) {
                 userStats.totalCorrect++;
                 userStats.currentStreak++;
-
-                // Points de base + bonus de série
-                const basePoints = 10;
-                const streakBonus = Math.min(userStats.currentStreak - 1, 10) * 2;
-                const points = basePoints + streakBonus;
-
-                userStats.totalScore += points;
 
                 if (userStats.currentStreak > userStats.bestStreak) {
                     userStats.bestStreak = userStats.currentStreak;
@@ -1411,13 +1413,11 @@
             const todayEntry = userStats.history.find(h => h.date === today);
 
             if (todayEntry) {
-                todayEntry.score = userStats.totalScore;
                 todayEntry.correct += correct ? 1 : 0;
                 todayEntry.total++;
             } else {
                 userStats.history.push({
                     date: today,
-                    score: userStats.totalScore,
                     correct: correct ? 1 : 0,
                     total: 1
                 });
@@ -1826,6 +1826,11 @@
                 ? Math.round((userStats.totalCorrect / userStats.totalAnswered) * 100)
                 : 0;
 
+            const todayPct = getTodayPercentage();
+            const today = new Date().toISOString().split('T')[0];
+            const todayEntry = userStats.history.find(h => h.date === today);
+            const todayTotal = todayEntry ? todayEntry.total : 0;
+
             const modal = document.createElement('div');
             modal.className = 'stats-modal';
             modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
@@ -1848,9 +1853,9 @@
                     </div>
 
                     <div class="stats-summary">
-                        <div class="stats-item">
-                            <div class="value">${userStats.totalScore}</div>
-                            <div class="label">Score total</div>
+                        <div class="stats-item" style="${todayPct >= 75 ? 'background: #e8f5e9;' : ''}">
+                            <div class="value" style="${todayPct >= 75 ? 'color: #2e7d32;' : ''}">${todayPct}%</div>
+                            <div class="label">Aujourd'hui (${todayTotal} Q)</div>
                         </div>
                         <div class="stats-item">
                             <div class="value">${userStats.bestStreak}</div>
@@ -1858,12 +1863,12 @@
                         </div>
                         <div class="stats-item">
                             <div class="value">${accuracy}%</div>
-                            <div class="label">Précision</div>
+                            <div class="label">Global</div>
                         </div>
                     </div>
 
                     <div class="stats-graph">
-                        <h3>Évolution du score</h3>
+                        <h3>Performance journalière <span style="color: #4caf50; font-size: 0.9em;">(objectif: 75%)</span></h3>
                         <div class="graph-container">
                             ${userStats.history.length > 1
                                 ? '<canvas id="statsCanvas" class="graph-canvas"></canvas>'
@@ -1887,13 +1892,16 @@
                         <h3>Historique récent</h3>
                         <div class="history-list">
                             ${userStats.history.length > 0
-                                ? userStats.history.slice().reverse().slice(0, 7).map(h => `
+                                ? userStats.history.slice().reverse().slice(0, 7).map(h => {
+                                    const pct = h.total > 0 ? Math.round((h.correct / h.total) * 100) : 0;
+                                    const isPass = pct >= 75;
+                                    return `
                                     <div class="history-item">
                                         <span class="history-date">${formatDate(h.date)}</span>
                                         <span>${h.correct}/${h.total} réponses</span>
-                                        <span class="history-score">${h.score} pts</span>
+                                        <span class="history-score" style="${isPass ? 'color: #2e7d32;' : ''}">${pct}%${isPass ? ' ✓' : ''}</span>
                                     </div>
-                                `).join('')
+                                `}).join('')
                                 : `<div style="color: #888; text-align: center; padding: 20px;">
                                     <div style="margin-bottom: 6px;">Aucune activité enregistrée</div>
                                     <div style="font-size: 0.85em; color: #aaa;">Commencez une session pour voir votre historique</div>
@@ -1938,14 +1946,16 @@
             const data = userStats.history.slice(-14); // 14 derniers jours max
             if (data.length < 2) return;
 
-            const padding = { top: 20, right: 20, bottom: 30, left: 50 };
+            const padding = { top: 20, right: 20, bottom: 30, left: 40 };
             const width = canvas.width - padding.left - padding.right;
             const height = canvas.height - padding.top - padding.bottom;
 
-            const scores = data.map(d => d.score);
-            const minScore = Math.min(...scores);
-            const maxScore = Math.max(...scores);
-            const scoreRange = maxScore - minScore || 1;
+            // Calculer les pourcentages journaliers
+            const percentages = data.map(d => d.total > 0 ? Math.round((d.correct / d.total) * 100) : 0);
+
+            // Échelle fixe de 0 à 100%
+            const minPct = 0;
+            const maxPct = 100;
 
             // Dessiner les axes
             ctx.strokeStyle = '#ddd';
@@ -1956,7 +1966,7 @@
             ctx.lineTo(canvas.width - padding.right, canvas.height - padding.bottom);
             ctx.stroke();
 
-            // Dessiner les lignes de grille horizontales
+            // Dessiner les lignes de grille horizontales (0%, 25%, 50%, 75%, 100%)
             ctx.strokeStyle = '#f0f0f0';
             ctx.setLineDash([5, 5]);
             for (let i = 0; i <= 4; i++) {
@@ -1968,11 +1978,32 @@
             }
             ctx.setLineDash([]);
 
+            // Ligne verte des 75% (seuil de réussite 15/20)
+            const threshold75Y = padding.top + height * (1 - 0.75);
+            ctx.strokeStyle = '#4caf50';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([8, 4]);
+            ctx.beginPath();
+            ctx.moveTo(padding.left, threshold75Y);
+            ctx.lineTo(canvas.width - padding.right, threshold75Y);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Label 75%
+            ctx.fillStyle = '#4caf50';
+            ctx.font = 'bold 10px -apple-system, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText('75%', canvas.width - padding.right + 4, threshold75Y + 4);
+
             // Calculer les points
-            const points = data.map((d, i) => ({
-                x: padding.left + (width * i / (data.length - 1)),
-                y: padding.top + height - ((d.score - minScore) / scoreRange * height)
-            }));
+            const points = data.map((d, i) => {
+                const pct = d.total > 0 ? (d.correct / d.total) * 100 : 0;
+                return {
+                    x: padding.left + (width * i / (data.length - 1)),
+                    y: padding.top + height - (pct / 100 * height),
+                    pct: Math.round(pct)
+                };
+            });
 
             // Dessiner l'aire sous la courbe
             const primaryColor = getComputedStyle(document.body).getPropertyValue('--primary').trim() || '#1877f2';
@@ -1996,23 +2027,25 @@
             });
             ctx.stroke();
 
-            // Dessiner les points
-            ctx.fillStyle = primaryColor;
+            // Dessiner les points (vert si >= 75%, couleur primaire sinon)
             points.forEach(p => {
+                ctx.fillStyle = p.pct >= 75 ? '#4caf50' : primaryColor;
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+                ctx.arc(p.x, p.y, 5, 0, Math.PI * 2);
                 ctx.fill();
             });
 
-            // Labels Y (scores)
+            // Labels Y (pourcentages)
             ctx.fillStyle = '#666';
             ctx.font = '11px -apple-system, sans-serif';
             ctx.textAlign = 'right';
-            ctx.fillText(maxScore, padding.left - 8, padding.top + 4);
-            ctx.fillText(minScore, padding.left - 8, canvas.height - padding.bottom);
+            ctx.fillText('100%', padding.left - 6, padding.top + 4);
+            ctx.fillText('50%', padding.left - 6, padding.top + height / 2 + 4);
+            ctx.fillText('0%', padding.left - 6, canvas.height - padding.bottom);
 
             // Labels X (dates)
             ctx.textAlign = 'center';
+            ctx.fillStyle = '#666';
             const labelIndices = [0, Math.floor(data.length / 2), data.length - 1];
             labelIndices.forEach(i => {
                 if (data[i]) {
