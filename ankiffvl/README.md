@@ -4,22 +4,38 @@ Application de révision des questions du QCM de la Fédération Française de V
 
 ## Fonctionnalités
 
-- **857 questions** issues du QCM officiel FFVL
-- **Sélection par niveau de brevet** : révisez uniquement les questions de votre niveau
-- **Explications pédagogiques** après chaque réponse pour mieux comprendre
+- **777 questions** issues du QCM officiel FFVL (parapente uniquement)
+- **Thèmes colorés** par niveau de brevet
+- **Score journalier** : pourcentage de réussite de la session du jour
+- **Objectif 75%** : seuil de réussite visualisé sur le graphique (15/20)
 - **Répétition espacée** : les questions sont reproposées selon votre niveau de maîtrise
-- **Progression sauvegardée** localement dans le navigateur
+- **Profil et statistiques** : graphique d'évolution, historique, meilleure série
+- **PWA** : installable sur mobile comme une application native
 - **Multi-utilisateurs** : chaque utilisateur a sa propre progression
 
 ## Niveaux de brevet
 
-| Niveau | Couleur | Questions |
-|--------|---------|-----------|
-| Brevet Initial | Vert (V) | 189 |
-| Brevet de Pilote | Bleu (B) | 370 |
-| Brevet de Pilote Confirmé | Marron (M) | 221 |
-| Qualification Treuil | (T) | 77 |
-| **Total** | | **857** |
+| Niveau | Couleur | Questions | Seuil examen |
+|--------|---------|-----------|--------------|
+| Brevet Initial | Vert (V) | 162 | 135/180 pts (75%) |
+| Brevet de Pilote | Bleu (B) | 325 | 270/360 pts (75%) |
+| Brevet Confirmé | Marron (M) | 214 | 135/180 pts (75%) |
+| Qualification Treuil | Gris (T) | 76 | - |
+| **Total** | | **777** | |
+
+> Les questions spécifiques au delta (préfixes H, R, X) ont été retirées.
+
+## Système de score
+
+Le score affiché correspond à votre **pourcentage de réussite du jour** :
+
+```
+Aujourd'hui : 22 bonnes sur 33 questions = 67%
+```
+
+- **Objectif** : atteindre 75% (équivalent 15/20 à l'examen)
+- **Série** : nombre de bonnes réponses consécutives (bonus de motivation)
+- **Graphique** : évolution jour par jour avec ligne verte à 75%
 
 ## Système de répétition espacée
 
@@ -38,62 +54,49 @@ Le système s'inspire de l'algorithme Anki :
 | 8 | 30 jours | Question apprise |
 
 - **Bonne réponse** : la question monte d'un niveau
-- **Mauvaise réponse** : la question redescend au niveau 1 (reproposée rapidement)
-
-### Quand une question est-elle considérée apprise ?
-
-Une question est considérée **apprise** lorsqu'elle atteint le niveau 8. Cela nécessite :
-- **8 bonnes réponses consécutives** sur des intervalles progressifs
-- Un délai total d'environ **25 jours** de révisions réussies (1min + 10min + 1h + 1j + 3j + 7j + 14j)
-
-Une seule erreur ramène la question au niveau 1, obligeant à recommencer le cycle complet.
+- **Mauvaise réponse** : la question redescend au niveau 1
+- **Nouvelles questions** : apparaissent dans un ordre aléatoire
 
 ## Utilisation
 
-1. Ouvrir `index.html` dans un navigateur
+1. Ouvrir `index.html` dans un navigateur (ou installer en PWA)
 2. Entrer votre nom ou pseudo
-3. Sélectionner votre niveau de brevet (Vert, Bleu, Marron, Treuil ou Toutes)
+3. Sélectionner votre niveau de brevet
 4. Cliquer sur "Commencer"
 5. Cocher les bonnes réponses et valider
 
-## Filtres disponibles
+### Profil
 
-- **À réviser** : questions dues + nouvelles
-- **Nouvelles** : questions jamais vues
-- **Toutes** : toutes les questions
+Cliquer sur la barre en haut à droite pour accéder au profil :
+- Score du jour et série en cours
+- Meilleure série et précision globale
+- Graphique d'évolution (avec seuil 75%)
+- Historique des 7 derniers jours
+- Déconnexion
 
 ## Référence au Manuel du Vol Libre
 
-Certaines questions incluent une référence au **Manuel du Vol Libre** de Pierre-Paul Ménégoz et Alain Jacques. Après avoir répondu à une question, un lien vers la page correspondante du manuel s'affiche pour approfondir le sujet.
-
-Pour ajouter une référence à une question, ajouter le champ `manualPage` dans `questions.js` :
-```javascript
-{
-    "id": "E10B",
-    "text": "La portance d'une aile est due à :",
-    "explanation": "...",
-    "manualPage": 28,  // ← Référence à la page 28 du manuel
-    "answers": [...]
-}
-```
+Certaines questions incluent une référence au **Manuel du Vol Libre** de Pierre-Paul Ménégoz et Alain Jacques. Après avoir répondu, un lien vers la page correspondante s'affiche.
 
 ## Fichiers
 
-- `index.html` : Application principale
-- `questions.js` : Base de données des questions (générée depuis le CSV)
-- `qcm_ffvl.csv` : Fichier source des questions
-- `Manuel-FFVL.pdf` : Manuel du Vol Libre FFVL (optionnel, pour les références)
-
-## Source des questions
-
-Les questions proviennent du dépôt [qcmffvl](https://github.com/jruffet/qcmffvl) de @jruffet.
+- `index.html` : Application principale (HTML/CSS/JS)
+- `questions.js` : Base de données des 777 questions
+- `manifest.json` : Configuration PWA
+- `icon-192.svg` : Icône de l'application
+- `Manuel-FFVL.pdf` : Manuel du Vol Libre (optionnel)
 
 ## Stockage
 
-Les données sont stockées dans le `localStorage` du navigateur :
-- `ankiffvl_user` : nom de l'utilisateur connecté
-- `ankiffvl_level` : niveau de brevet sélectionné
-- `ankiffvl_progress_{username}` : progression de chaque utilisateur
+Données stockées dans le `localStorage` du navigateur :
+- `ankiffvl_user` : utilisateur connecté
+- `ankiffvl_level` : niveau de brevet
+- `ankiffvl_progress_{user}` : progression (répétition espacée)
+- `ankiffvl_stats_{user}` : statistiques et historique
+
+## Source des questions
+
+Questions issues du dépôt [qcmffvl](https://github.com/jruffet/qcmffvl) de @jruffet.
 
 ## Licence
 
