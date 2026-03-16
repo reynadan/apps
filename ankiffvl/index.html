@@ -357,6 +357,11 @@
             color: #c62828;
         }
 
+        .answer-score.neutral {
+            background: #f5f5f5;
+            color: #757575;
+        }
+
         .buttons {
             display: flex;
             gap: 10px;
@@ -1108,6 +1113,27 @@
         .shake {
             animation: shake 0.4s ease;
         }
+
+        /* Diagrams */
+        .diagram-container {
+            margin: 16px 0;
+            padding: 16px;
+            background: #fff;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .diagram-container svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .diagram-title {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 8px;
+            font-style: italic;
+        }
     </style>
     <script src="questions.js"></script>
 </head>
@@ -1128,9 +1154,26 @@
         <!-- Login Screen -->
         <div id="loginScreen" class="card">
             <h1>QCM FFVL</h1>
-            <p style="text-align: center; color: #666; margin-bottom: 25px;">
-                Révisez les questions du brevet de pilote avec la méthode de répétition espacée
+            <p style="text-align: center; color: #666; margin-bottom: 20px;">
+                Révisez les questions du brevet de pilote parapente
             </p>
+
+            <div class="app-description" style="background: #f8f9fa; border-radius: 10px; padding: 18px; margin-bottom: 25px; font-size: 0.9em; line-height: 1.6;">
+                <p style="margin: 0 0 12px 0; color: #333;">
+                    <strong>777 questions</strong> issues du QCM officiel de la FFVL pour préparer vos brevets :
+                    Initial, Pilote, Confirmé et qualification Treuil.
+                </p>
+                <p style="margin: 0 0 12px 0; color: #555;">
+                    L'application utilise la <strong>répétition espacée</strong> (méthode Anki) : les questions bien maîtrisées
+                    reviennent moins souvent, celles en difficulté sont reproposées rapidement.
+                </p>
+                <p style="margin: 0; color: #555;">
+                    <span style="color: #2e7d32;">●</span> <strong>Objectif 75%</strong> — seuil de réussite à l'examen (15/20)<br>
+                    <span style="color: #1565c0;">●</span> Schémas explicatifs pour les concepts clés<br>
+                    <span style="color: #7b1fa2;">●</span> Fonctionne hors-ligne, progression sauvegardée
+                </p>
+            </div>
+
             <div class="login-form">
                 <input type="text" id="username" placeholder="Votre nom ou pseudo" autocomplete="username">
                 <select id="levelSelect">
@@ -1174,10 +1217,15 @@
             </div>
 
             <div class="progress-container">
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                <div class="progress-bar" style="display: flex; overflow: hidden;">
+                    <div class="progress-fill" id="progressLearned" style="width: 0%; background: #4caf50;"></div>
+                    <div class="progress-fill" id="progressInProgress" style="width: 0%; background: #2196f3;"></div>
                 </div>
-                <div class="progress-text" id="progressText">0% complété</div>
+                <div class="progress-legend" style="display: flex; justify-content: center; gap: 15px; margin-top: 8px; font-size: 0.8em;">
+                    <span><span style="display:inline-block;width:10px;height:10px;background:#4caf50;border-radius:2px;margin-right:4px;"></span>Apprises <strong id="progressLearnedPct">0%</strong></span>
+                    <span><span style="display:inline-block;width:10px;height:10px;background:#2196f3;border-radius:2px;margin-right:4px;"></span>En cours <strong id="progressInProgressPct">0%</strong></span>
+                    <span style="color:#999;"><span style="display:inline-block;width:10px;height:10px;background:#e0e0e0;border-radius:2px;margin-right:4px;"></span>Nouvelles</span>
+                </div>
             </div>
 
             <div class="filter-tabs">
@@ -1189,6 +1237,17 @@
             <div class="buttons">
                 <button class="btn btn-primary" onclick="startSession()">Commencer la session</button>
                 <button class="btn btn-secondary" onclick="resetProgress()">Réinitialiser</button>
+            </div>
+
+            <div class="test-question" style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee;">
+                <div style="display: flex; gap: 8px; align-items: center; justify-content: center;">
+                    <input type="text" id="testQuestionId" placeholder="ID (ex: A94B)"
+                           onkeypress="if(event.key==='Enter')testQuestion()"
+                           style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; width: 120px; font-size: 14px;">
+                    <button class="btn btn-secondary" onclick="testQuestion()" style="padding: 8px 16px;">
+                        Tester
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -1287,6 +1346,86 @@
         // URL du Manuel du Vol Libre FFVL (PDF)
         const MANUAL_URL = 'Manuel-FFVL.pdf';
         const MANUAL_ONLINE_URL = 'http://manuelaraimbault.com/wp-content/uploads/2019/04/Manuel-FFVL.pdf';
+
+        // Diagrammes SVG pour les explications
+        const DIAGRAMS = {
+            // Diagramme incidence/assiette/trajectoire
+            incidence: {
+                title: "Incidence, assiette et pente",
+                img: "https://parapente360.com/wp-content/uploads/2022/09/Angles2.jpg",
+                source: "https://parapente360.com/schemas-dessins-theorie-parapente/schemas-parapente-mecanique-vol/"
+            },
+
+            // Diagramme convection thermique (utilise image transfert chaleur)
+            convection: {
+                title: "Modes de transfert de chaleur",
+                img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Heat-transmittance-means1-fr.jpg/500px-Heat-transmittance-means1-fr.jpg",
+                source: "https://jackwestin.com/resources/mcat-content/energy-changes-in-chemical-reactions/heat-transfer-conduction-convection-radiation"
+            },
+
+            // Diagramme onde de ressaut (utilise image foehn)
+            ressaut: {
+                title: "Onde de ressaut et rotors",
+                img: "https://www.meteosuisse.admin.ch/images/952/website/weather/weather-and-climate-from-a-to-z/FoehnDuSud_FR.jpg",
+                source: "https://www.meteosuisse.admin.ch"
+            },
+
+            // Diagramme modes de transfert de chaleur
+            transfertChaleur: {
+                title: "Modes de transfert de chaleur",
+                img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Heat-transmittance-means1-fr.jpg/500px-Heat-transmittance-means1-fr.jpg",
+                source: "https://jackwestin.com/resources/mcat-content/energy-changes-in-chemical-reactions/heat-transfer-conduction-convection-radiation"
+            },
+
+            // Effet de foehn avec onde de ressaut
+            foehn: {
+                title: "Effet de foehn et onde de ressaut",
+                img: "https://www.meteosuisse.admin.ch/images/952/website/weather/weather-and-climate-from-a-to-z/FoehnDuSud_FR.jpg",
+                source: "https://www.meteosuisse.admin.ch"
+            },
+
+            // Types de nuages
+            nuages: {
+                title: "Classification des nuages",
+                img: "https://www.notre-planete.info/terre/climatologie_meteo/medias/nuages.png",
+                source: "https://www.notre-planete.info/terre/climatologie_meteo/nuages.php"
+            },
+
+            // Facteur de charge
+            facteurCharge: {
+                title: "Facteur de charge en virage",
+                img: "https://cdn.prod.website-files.com/673867610036ea32822ae75b/67865774c2d8f12b839d6e7e_678657580e53853e62f7f1b5_poids-apparent.jpeg",
+                source: "https://ppmenegoz.com/post/facteur-de-charge"
+            },
+
+            // Portance, traînée, RFA
+            portanceTrainee: {
+                title: "Forces aérodynamiques : Portance, Traînée, RFA",
+                img: "https://parapente360.com/wp-content/uploads/2022/08/Forces-300x270.jpg",
+                source: "https://parapente360.com/encyclopedia/resultante-forces-aerodynamiques/"
+            },
+
+            // Finesse
+            finesse: {
+                title: "La finesse",
+                img: "https://cdn.prod.website-files.com/673867610036ea32822ae75b/67867d4aebc350cce30e18b1_67867d4599bc7c8e4d53db38_finesse.jpeg",
+                source: "https://ppmenegoz.com/post/finesse"
+            },
+
+            // Allongement
+            allongement: {
+                title: "Allongement d'une aile",
+                img: "https://parapente360.com/wp-content/uploads/2023/11/Allongement-et-formule.jpg",
+                source: "https://parapente360.com/articles-materiel-parapente/parapente-description-terminologie/"
+            },
+
+            // Vitesse air / vitesse sol
+            vitesseVent: {
+                title: "Vitesse air vs vitesse sol",
+                img: "https://parapente360.com/wp-content/uploads/2023/03/V-air-sol-02-10kmh.jpg",
+                source: "https://parapente360.com/documents-pedagogique-parapente/vitesse-air-vitesse-sol/"
+            }
+        };
 
         // Charger les questions depuis le fichier JS et filtrer par niveau
         function loadQuestions() {
@@ -1468,6 +1607,7 @@
             let due = 0;
             let newCount = 0;
             let learned = 0;
+            let inProgress = 0;
 
             for (const q of questions) {
                 const progress = getQuestionProgress(q.id);
@@ -1476,12 +1616,15 @@
                     newCount++;
                 } else if (progress.level >= INTERVALS.length - 1) {
                     learned++;
-                } else if (progress.nextReview <= now) {
-                    due++;
+                } else {
+                    inProgress++;
+                    if (progress.nextReview <= now) {
+                        due++;
+                    }
                 }
             }
 
-            return { due, new: newCount, learned, total: questions.length };
+            return { due, new: newCount, learned, inProgress, total: questions.length };
         }
 
         // Mélanger un tableau (Fisher-Yates)
@@ -1555,9 +1698,14 @@
             document.getElementById('learnedCount').textContent = stats.learned;
             document.getElementById('totalCount').textContent = stats.total;
 
-            const percentage = stats.total > 0 ? Math.round((stats.learned / stats.total) * 100) : 0;
-            document.getElementById('progressFill').style.width = percentage + '%';
-            document.getElementById('progressText').textContent = percentage + '% complété';
+            // Barre de progression multi-segments
+            const learnedPct = stats.total > 0 ? Math.round((stats.learned / stats.total) * 100) : 0;
+            const inProgressPct = stats.total > 0 ? Math.round((stats.inProgress / stats.total) * 100) : 0;
+
+            document.getElementById('progressLearned').style.width = learnedPct + '%';
+            document.getElementById('progressInProgress').style.width = inProgressPct + '%';
+            document.getElementById('progressLearnedPct').textContent = learnedPct + '%';
+            document.getElementById('progressInProgressPct').textContent = inProgressPct + '%';
         }
 
         function setFilter(filter) {
@@ -1576,6 +1724,22 @@
                 return;
             }
 
+            currentQuestionIndex = 0;
+            showQuestion();
+        }
+
+        function testQuestion() {
+            const id = document.getElementById('testQuestionId').value.trim().toUpperCase();
+            if (!id) return;
+
+            const question = QUESTIONS_DATA.find(q => q.id === id);
+            if (!question) {
+                alert('Question "' + id + '" non trouvée');
+                return;
+            }
+
+            // Charger cette question seule
+            filteredQuestions = [question];
             currentQuestionIndex = 0;
             showQuestion();
         }
@@ -1652,32 +1816,35 @@
             answers.forEach(answerDiv => {
                 const checkbox = answerDiv.querySelector('input');
                 const score = parseInt(checkbox.dataset.score);
-                const isCorrect = score > 0;
+                const isGood = score > 0;      // Bonne réponse (doit être cochée)
+                const isBad = score < 0;       // Mauvaise réponse (ne doit pas être cochée)
+                const isNeutral = score === 0; // Réponse neutre (pas d'impact)
                 const isSelected = checkbox.checked;
 
-                if (isCorrect) {
+                if (isGood) {
                     maxPossibleScore += score;
                 }
 
-                if (isSelected && isCorrect) {
+                if (isSelected && isGood) {
                     answerDiv.classList.add('correct');
                     totalScore += score;
-                } else if (isSelected && !isCorrect) {
+                } else if (isSelected && isBad) {
                     answerDiv.classList.add('incorrect');
                     hasErrors = true;
-                } else if (!isSelected && isCorrect) {
+                } else if (!isSelected && isGood) {
                     answerDiv.classList.add('missed');
                     hasErrors = true;
                 }
+                // Les réponses neutres (0 points) n'affectent pas hasErrors
 
                 // Afficher le score
                 const scoreSpan = document.createElement('span');
-                scoreSpan.className = 'answer-score ' + (score > 0 ? 'positive' : 'negative');
+                scoreSpan.className = 'answer-score ' + (score > 0 ? 'positive' : (score < 0 ? 'negative' : 'neutral'));
                 scoreSpan.textContent = (score > 0 ? '+' : '') + score;
                 answerDiv.appendChild(scoreSpan);
             });
 
-            // Déterminer si la réponse est correcte
+            // Déterminer si la réponse est correcte (toutes les bonnes cochées, aucune mauvaise)
             const isCorrect = !hasErrors && totalScore === maxPossibleScore;
 
             // Afficher le résultat
@@ -1770,6 +1937,23 @@
             const explanationBox = document.getElementById('explanationBox');
 
             let html = '<h4>Explication</h4>';
+
+            // Diagramme si disponible
+            if (question.diagram && DIAGRAMS[question.diagram]) {
+                const diagram = DIAGRAMS[question.diagram];
+                html += '<div class="diagram-container">';
+                if (diagram.img) {
+                    html += '<img src="' + diagram.img + '" alt="' + diagram.title + '" style="max-width:100%; border-radius:8px;">';
+                } else if (diagram.svg) {
+                    html += diagram.svg;
+                }
+                html += '<div class="diagram-title">' + diagram.title;
+                if (diagram.source) {
+                    html += ' <a href="' + diagram.source + '" target="_blank" rel="noopener" style="font-size:0.8em; color:#1565c0; margin-left:8px;">source</a>';
+                }
+                html += '</div>';
+                html += '</div>';
+            }
 
             // Explication principale
             if (question.explanation) {
